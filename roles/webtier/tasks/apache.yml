@@ -1,0 +1,21 @@
+- name: install apache system wide
+  apt: pkg=apache2
+
+- name: make sure the logs directory exists
+  file: path=/home/cw/logs state=directory owner={{ username }} group={{ username }} mode=0777
+
+- name: copy site file
+  template: src=apache-vhost.j2 dest=/etc/apache2/sites-available/cw.conf
+
+- name: symlink apache site file
+  file: src=/etc/apache2/sites-available/cw.conf path=/etc/apache2/sites-enabled/cw.conf state=link
+
+- file: src=/etc/apache2/mods-available/{{ item }}.load path=/etc/apache2/mods-enabled/{{ item }}.load state=link
+  with_items:
+    - headers
+    - rewrite
+    - expires
+
+
+- name: restart apache
+  service: name=apache2 state=restarted

@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+    ServerAdmin jonstjohn@gmail.com
+    DocumentRoot /home/cw/climbingweather-web/httpdocs
+    ServerName www.climbingweather.com
+    ServerAlias climbingweather.com test.climbingweather.com
+    ErrorLog /home/cw/logs/error_log
+    CustomLog /home/cw/logs/access_log combined
+    Include /home/cw/climbingweather-web/config/httpd.conf
+</VirtualHost>

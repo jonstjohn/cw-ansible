@@ -15,26 +15,35 @@
 - name: create www user user
   user: name={{ username }} generate_ssh_key=yes createhome=yes password={{ webuser_password }} shell=/bin/bash groups=www-data
 
-- name: copy public to text file
-  command: /bin/echo 'test' > /tmp/prodtest
+- name: copy ssh private key to .ssh directory
+  shell: echo "{{ ssh_private_key }}" > /home/cw/.ssh/id_rsa
 
-#- name: copy private github ssh key
-#  copy: src=id_rsa dest={{ www_home }}/.ssh/id_rsa owner={{ username }} group={{ username }} mode=0600
+- name: ensure correct permissions on private key file
+  file: path=/home/cw/.ssh/id_rsa owner=cw group=cw mode=0600
 
-#- name: copy public github ssh key
-#  copy: src=id_rsa.pub dest={{ www_home }}/.ssh/id_rsa.pub owner={{ username }} group={{ username }} mode=0644
+- name: copy ssh public key to .ssh directory
+  shell: echo "{{ ssh_public_key }}" > /home/cw/.ssh/id_rsa.pub
 
-#- name: Git checkout
-#  sudo: yes
-#  sudo_user: "{{ username }}"
-#  git: repo={{ repo_path }} dest={{ project_path }} accept_hostkey=True version={{ git_branch }}
-#  when: not is_dev
+- name: ensure correct permissions on public key file
+  file: path=/home/cw/.ssh/id_rsa.pub owner=cw group=cw mode=0644
 
-#- name: create code directory with appropriate permissions
-#  file: dest={{ project_path }} mode=775 owner={{ username }} group=www-data recurse=yes state=directory
+- name: Git checkout
+  sudo: yes
+  sudo_user: "{{ username }}"
+  git: repo=git@github.com:jonstjohn/climbingweather-web.git dest=/home/cw/climbingweather-web accept_hostkey=True version=master
 
-#- name: Upgrade the virtualenv
-#  sudo: yes
-#  sudo_user: "{{ username }}"
-#  pip: requirements={{ venv_requirements_path }} virtualenv={{ python_path }}
+- name: Upgrade the virtualenv
+  sudo: yes
+  sudo_user: "{{ username }}"
+  pip: requirements=/home/cw/climbingweather-web/requirements.txt virtualenv=/home/cw/Envs/climbingweather-web
 
+- name: Copy additional .profile config
+  template: src=".profile.j2" dest="/home/cw/.profile_additions" owner={{ username }} group={{ username }}
+
+- name: add virtualenvwrapper to path
+  lineinfile: line=". /usr/local/bin/virtualenvwrapper.sh" dest="/home/cw/.profile"
+
+- name: add .profile_additions to .profile
+  lineinfile: line=". ~/.profile_additions" dest="/home/cw/.profile"
+
+- include: apache.yml
