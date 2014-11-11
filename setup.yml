@@ -1,0 +1,19 @@
+# file: setup.yml
+
+---
+
+- hosts: all
+  sudo: yes
+  roles:
+    - common
+
+- hosts: dbservers
+  sudo: yes
+  roles:
+    - dbtier
+
+- hosts: webservers
+  sudo: yes
+  roles:
+    - webtier
+

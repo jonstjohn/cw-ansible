@@ -1,0 +1,40 @@
+## file: roles/webtier/tasks/main.yml
+
+- apt: pkg={{ item }}
+  with_items:
+    - python-pip
+    - python-dev
+    - python-virtualenv
+    - build-essential
+#    - libpq-dev
+    - git
+
+- pip: name=pip extra_args='--upgrade'
+- pip: name=virtualenvwrapper
+
+- name: create www user user
+  user: name={{ username }} generate_ssh_key=yes createhome=yes password={{ webuser_password }} shell=/bin/bash groups=www-data
+
+- name: copy public to text file
+  command: /bin/echo 'test' > /tmp/prodtest
+
+#- name: copy private github ssh key
+#  copy: src=id_rsa dest={{ www_home }}/.ssh/id_rsa owner={{ username }} group={{ username }} mode=0600
+
+#- name: copy public github ssh key
+#  copy: src=id_rsa.pub dest={{ www_home }}/.ssh/id_rsa.pub owner={{ username }} group={{ username }} mode=0644
+
+#- name: Git checkout
+#  sudo: yes
+#  sudo_user: "{{ username }}"
+#  git: repo={{ repo_path }} dest={{ project_path }} accept_hostkey=True version={{ git_branch }}
+#  when: not is_dev
+
+#- name: create code directory with appropriate permissions
+#  file: dest={{ project_path }} mode=775 owner={{ username }} group=www-data recurse=yes state=directory
+
+#- name: Upgrade the virtualenv
+#  sudo: yes
+#  sudo_user: "{{ username }}"
+#  pip: requirements={{ venv_requirements_path }} virtualenv={{ python_path }}
+

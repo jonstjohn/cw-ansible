@@ -1,0 +1,9 @@
+[webservers]
+prod
+
+[dbservers]
+prod
+
+[dev:children]
+webservers
+dbservers
