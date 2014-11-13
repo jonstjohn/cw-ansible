@@ -1,8 +1,32 @@
 - name: install apache system wide
   apt: pkg=apache2
 
+- name: install php5
+  apt: pkg=php5
+
+- name: install libapache2-mod-php5
+  apt: pkg=libapache2-mod-php5
+
+- name: allow short open tags
+  replace: dest=/etc/php5/apache2/php.ini regexp='^short_open_tag = Off$' replace='short_open_tag = On'
+
+- name: install mysql client
+  apt: pkg=mysql-client
+
+- name: install php mysql
+  apt: pkg=php5-mysql
+
 - name: make sure the logs directory exists
   file: path=/home/cw/logs state=directory owner={{ username }} group={{ username }} mode=0777
+
+- name: make sure the smarty cache directory exists
+  file: path=/home/cw/smarty_cache state=directory owner={{ username }} group={{ username }} mode=0777
+
+- name: make sure the cache directory exists
+  file: path=/home/cw/smarty_cache/cache state=directory owner={{ username }} group={{ username }} mode=0777
+
+- name: make sure the cache directory exists
+  file: path=/home/cw/smarty_cache/templates_c state=directory owner={{ username }} group={{ username }} mode=0777
 
 - name: copy site file
   template: src=apache-vhost.j2 dest=/etc/apache2/sites-available/cw.conf
@@ -10,12 +34,17 @@
 - name: symlink apache site file
   file: src=/etc/apache2/sites-available/cw.conf path=/etc/apache2/sites-enabled/cw.conf state=link
 
+- name: copy config file
+  template: src=apache-conf.j2 dest=/etc/apache2/conf-available/cw.conf
+
+- name: symlink apache site file
+  file: src=/etc/apache2/conf-available/cw.conf path=/etc/apache2/conf-enabled/cw.conf state=link
+
 - file: src=/etc/apache2/mods-available/{{ item }}.load path=/etc/apache2/mods-enabled/{{ item }}.load state=link
   with_items:
     - headers
     - rewrite
     - expires
-
 
 - name: restart apache
   service: name=apache2 state=restarted

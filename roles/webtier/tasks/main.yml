@@ -6,7 +6,6 @@
     - python-dev
     - python-virtualenv
     - build-essential
-#    - libpq-dev
     - git
 
 - pip: name=pip extra_args='--upgrade'
@@ -30,7 +29,7 @@
 - name: Git checkout
   sudo: yes
   sudo_user: "{{ username }}"
-  git: repo=git@github.com:jonstjohn/climbingweather-web.git dest=/home/cw/climbingweather-web accept_hostkey=True version=master
+  git: repo=git@github.com:jonstjohn/climbingweather-web.git dest=/home/cw/climbingweather-web accept_hostkey=True version={{ git_branch }}
 
 - name: Upgrade the virtualenv
   sudo: yes

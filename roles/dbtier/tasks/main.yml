@@ -1,1 +1,10 @@
 #
+
+- name: Install MySQL server
+  apt: pkg=mysql-server
+
+- name: Setup cw database
+  mysql_db: name=cw collation=utf8_general_ci encoding=utf8
+
+- name: Setup cw user
+  mysql_user: name=cw password={{ mysql_cw_password }} priv=cw.*:ALL
