@@ -7,6 +7,9 @@
 - name: install libapache2-mod-php5
   apt: pkg=libapache2-mod-php5
 
+- name: install curl
+  apt: pkg=php5-curl
+
 - name: allow short open tags
   replace: dest=/etc/php5/apache2/php.ini regexp='^short_open_tag = Off$' replace='short_open_tag = On'
 

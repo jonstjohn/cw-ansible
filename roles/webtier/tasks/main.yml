@@ -7,6 +7,8 @@
     - python-virtualenv
     - build-essential
     - git
+    - sphinxsearch
+    - redis-server
 
 - pip: name=pip extra_args='--upgrade'
 - pip: name=virtualenvwrapper
@@ -46,3 +48,5 @@
   lineinfile: line=". ~/.profile_additions" dest="/home/cw/.profile"
 
 - include: apache.yml
+
+- include: degrib.yml
