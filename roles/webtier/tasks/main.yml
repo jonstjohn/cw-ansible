@@ -47,6 +47,15 @@
 - name: add .profile_additions to .profile
   lineinfile: line=". ~/.profile_additions" dest="/home/cw/.profile"
 
+- name: make sure the sphinx directory exists
+  file: path=/home/cw/sphinx state=directory owner={{ username }} group={{ username }}
+
+- name: make sure the sphinx data directory exists
+  file: path=/home/cw/sphinx/data state=directory owner={{ username }} group={{ username }}
+
+- name: make sure the sphinx logs directory exists
+  file: path=/home/cw/sphinx/logs state=directory owner={{ username }} group={{ username }}
+
 - include: apache.yml
 
 - include: degrib.yml
