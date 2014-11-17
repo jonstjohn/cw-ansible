@@ -1,0 +1,26 @@
+- name: Download degrib
+  get_url: dest=/home/cw url=http://www.nws.noaa.gov/mdl/degrib/download/degrib-src.tar.gz
+
+- name: Unarchive degrib
+  unarchive: src=/home/cw/degrib-src.tar.gz dest=/home/cw
+
+- name: Install tcl
+  apt: pkg=tcl-dev
+
+- name: Copy existing compression library to src
+  copy: src=/usr/lib/x86_64-linux-gnu/libz.a dest=/home/cw/degrib/src/zlib
+
+- name: Make degrib
+  shell: ./config-linux.sh && make || echo 0 chdir=/home/cw/degrib/src creates=/usr/local/bin/degrib 
+
+- name: Copy degrib to /usr/local/bin
+  shell: cp /home/cw/degrib/src/degrib/degrib /usr/local/bin
+
+- name: Make sure geodata directory exists
+  file: path=/home/cw/noaa/degrib/geodata state=directory owner={{ username }} group={{ username }}
+
+- name: Copy geodata contents to geodata directory
+  shell: cp /home/cw/degrib/geodata/* /home/cw/noaa/degrib/geodata
+
+- name: Make sure xml directory exists
+  file: path=/home/cw/noaa/xml state=directory owner={{ username }} group={{ username }}
