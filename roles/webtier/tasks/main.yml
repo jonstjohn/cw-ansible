@@ -9,6 +9,7 @@
     - git
     - sphinxsearch
     - redis-server
+    - postfix
 
 - pip: name=pip extra_args='--upgrade'
 - pip: name=virtualenvwrapper
