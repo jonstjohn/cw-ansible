@@ -57,6 +57,16 @@
 - name: make sure the sphinx logs directory exists
   file: path=/home/cw/sphinx/logs state=directory owner={{ username }} group={{ username }}
 
+- name: Set Time Zone
+  copy: content='America/New_York'
+        dest=/etc/timezone
+        owner=root
+        group=root
+        mode=0644
+        backup=yes
+  notify:
+    - update timezone
+
 - include: apache.yml
 
 - include: degrib.yml
