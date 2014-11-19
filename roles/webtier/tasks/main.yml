@@ -42,6 +42,9 @@
 - name: Copy additional .profile config
   template: src=".profile.j2" dest="/home/cw/.profile_additions" owner={{ username }} group={{ username }}
 
+- name: Copy config.cfg file
+  template: src="config.cfg.j2" dest="/home/cw/config.cfg" owner={{ username }} group={{ username }}
+
 - name: add virtualenvwrapper to path
   lineinfile: line=". /usr/local/bin/virtualenvwrapper.sh" dest="/home/cw/.profile"
 

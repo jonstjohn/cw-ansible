@@ -1,0 +1,23 @@
+# Config file for ClimbingWeather.com
+
+# general config
+[configuration]
+environment = {{ site_env }}
+base_url = http://test.climbingweather.com
+root_dir = /home/cw
+noaa_dir = /home/cw/noaa
+
+# database
+[database]
+database = cw
+username = cw
+password = {{ mysql_cw_password }}
+host = localhost
+
+# google
+[google]
+gmap_key = {{ gmap_key }}
+
+# sphinx
+[sphinx]
+port = 9312
