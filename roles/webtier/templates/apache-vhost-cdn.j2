@@ -1,16 +1,16 @@
 <VirtualHost *:80>
     ServerAdmin admin@climbingweather.com
-    DocumentRoot /home/cw/climbingweather-web/climbingweather-web/httpdocs
+    DocumentRoot /home/cw/climbingweather-web/httpdocs
     ServerName {{ cdn_server_name }}
     ServerAlias {{ cdn_server_alias }}
     ErrorLog /home/cw/logs/cdn_error_log
     CustomLog /home/cw/logs/cdn_access_log combined
     # "%h %l %u %t \"%r\" %>s %b"
-    <Directory /home/cw/climbingweather-web/code/httpdocs>
+    <Directory /home/cw/climbingweather-web/httpdocs>
         Order Deny,Allow
         Deny from All
     </Directory>
-    <Directory /home/cw/climbingweather-web/code/httpdocs/img>
+    <Directory /home/cw/climbingweather-web/httpdocs/img>
         Allow from All
     ExpiresActive On
     ExpiresByType image/jpg "access plus 10 days"
@@ -18,17 +18,17 @@
     ExpiresByType image/gif "access plus 10 days"
     ExpiresByType image/png "access plus 10 days"
     </Directory>
-    <Directory /home/cw/climbingweather-web/code/httpdocs/js>
+    <Directory /home/cw/climbingweather-web/httpdocs/js>
         Allow from All
     ExpiresActive On
     ExpiresByType application/javascript "access plus 10 days"
     </Directory>
-    <Directory /home/cw/climbingweather-web/code/httpdocs/css>
+    <Directory /home/cw/climbingweather-web/httpdocs/css>
         Allow from All
     ExpiresActive On
     ExpiresByType text/css "access plus 10 days"
     </Directory>
-    <Directory /home/cw/climbingweather-web/code/httpdocs/widget/js>
+    <Directory /home/cw/climbingweather-web/httpdocs/widget/js>
         Allow from All
     ExpiresActive Off
     </Directory>
