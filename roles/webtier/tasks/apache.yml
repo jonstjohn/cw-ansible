@@ -37,6 +37,12 @@
 - name: symlink apache site file
   file: src=/etc/apache2/sites-available/cw.conf path=/etc/apache2/sites-enabled/cw.conf state=link
 
+- name: copy cdn site file
+  template: src=apache-vhost-cdn.j2 dest=/etc/apache2/sites-available/cw-cdn.conf
+
+- name: symlink apache cdn site file
+  file: src=/etc/apache2/sites-available/cw-cdn.conf path=/etc/apache2/sites-enabled/cw-cdn.conf state=link
+
 - name: copy config file
   template: src=apache-conf.j2 dest=/etc/apache2/conf-available/cw.conf
 

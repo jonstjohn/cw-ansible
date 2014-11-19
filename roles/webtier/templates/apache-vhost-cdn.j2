@@ -1,0 +1,52 @@
+<VirtualHost *:80>
+    ServerAdmin admin@climbingweather.com
+    DocumentRoot /home/cw/climbingweather-web/climbingweather-web/httpdocs
+    ServerName {{ cdn_server_name }}
+    ServerAlias {{ cdn_server_alias }}
+    ErrorLog /home/cw/logs/cdn_error_log
+    CustomLog /home/cw/logs/cdn_access_log combined
+    # "%h %l %u %t \"%r\" %>s %b"
+    <Directory /home/cw/climbingweather-web/code/httpdocs>
+        Order Deny,Allow
+        Deny from All
+    </Directory>
+    <Directory /home/cw/climbingweather-web/code/httpdocs/img>
+        Allow from All
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 10 days"
+    ExpiresByType image/jpeg "access plus 10 days"
+    ExpiresByType image/gif "access plus 10 days"
+    ExpiresByType image/png "access plus 10 days"
+    </Directory>
+    <Directory /home/cw/climbingweather-web/code/httpdocs/js>
+        Allow from All
+    ExpiresActive On
+    ExpiresByType application/javascript "access plus 10 days"
+    </Directory>
+    <Directory /home/cw/climbingweather-web/code/httpdocs/css>
+        Allow from All
+    ExpiresActive On
+    ExpiresByType text/css "access plus 10 days"
+    </Directory>
+    <Directory /home/cw/climbingweather-web/code/httpdocs/widget/js>
+        Allow from All
+    ExpiresActive Off
+    </Directory>
+
+
+    SetOutputFilter DEFLATE
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+    SetEnvIfNoCase Request_URI \
+    \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+    Header append Vary User-Agent env=!dont-vary
+
+    # ETags turned off
+    FileETag none
+
+    RewriteEngine On
+    RewriteRule ^/(js|css)/(.+)\.([0-9]+)\.(js|css)$ /$1/$2.$4 [L]
+    RewriteRule ^/(img)/(.+)\.([0-9]+)\.(png|gif|jpg)$ /$1/$2.$4 [L]
+    RewriteRule ^/(.*).(png|gif|jpg|css|js)$ /$1.$2 [L]
+</VirtualHost>
