@@ -7,30 +7,34 @@
     CustomLog /home/cw/logs/cdn_access_log combined
     # "%h %l %u %t \"%r\" %>s %b"
     <Directory /home/cw/climbingweather-web/httpdocs>
-        Order Deny,Allow
-        Deny from All
+        Require all granted
+        Options -Indexes
     </Directory>
     <Directory /home/cw/climbingweather-web/httpdocs/img>
-        Allow from All
-    ExpiresActive On
-    ExpiresByType image/jpg "access plus 10 days"
-    ExpiresByType image/jpeg "access plus 10 days"
-    ExpiresByType image/gif "access plus 10 days"
-    ExpiresByType image/png "access plus 10 days"
+        Require all granted
+        ExpiresActive On
+        ExpiresByType image/jpg "access plus 10 days"
+        ExpiresByType image/jpeg "access plus 10 days"
+        ExpiresByType image/gif "access plus 10 days"
+        ExpiresByType image/png "access plus 10 days"
+        Options -Indexes
     </Directory>
     <Directory /home/cw/climbingweather-web/httpdocs/js>
-        Allow from All
-    ExpiresActive On
-    ExpiresByType application/javascript "access plus 10 days"
+        Require all granted
+        ExpiresActive On
+        ExpiresByType application/javascript "access plus 10 days"
+        Options -Indexes
     </Directory>
     <Directory /home/cw/climbingweather-web/httpdocs/css>
-        Allow from All
-    ExpiresActive On
-    ExpiresByType text/css "access plus 10 days"
+        Require all granted
+        ExpiresActive On
+        ExpiresByType text/css "access plus 10 days"
+        Options -Indexes
     </Directory>
     <Directory /home/cw/climbingweather-web/httpdocs/widget/js>
-        Allow from All
-    ExpiresActive Off
+        Require all granted
+        ExpiresActive Off
+        Options -Indexes
     </Directory>
 
 
