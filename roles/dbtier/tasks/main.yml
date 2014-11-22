@@ -3,6 +3,12 @@
 - name: Install MySQL server
   apt: pkg=mysql-server
 
+- name: Install MySQL client library
+  apt: pkg=libmysqlclient-dev
+
+- name: Install python mysql package
+  apt: pkg=python-mysqldb
+
 - name: Setup cw database
   mysql_db: name=cw collation=utf8_general_ci encoding=utf8
 
