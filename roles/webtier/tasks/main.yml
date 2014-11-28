@@ -86,6 +86,12 @@
     line='cw ALL=(sphinxsearch) NOPASSWD: /usr/bin/indexer'
     validate='visudo -cf %s'"
 
+- name: Composer link exists
+  file: src=/home/cw/climbingweather-web/composer path=/usr/local/bin/composer state=link
+
+- name: Run composer
+  composer: working_dir=/home/cw/climbingweather-web
+
 - include: apache.yml
 
 - include: degrib.yml
