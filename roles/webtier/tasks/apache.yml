@@ -1,6 +1,9 @@
 - name: install apache system wide
   apt: pkg=apache2
 
+- name: install uwsgi system wide
+  pip: name=uwsgi
+
 - name: install php5
   apt: pkg=php5
 
@@ -55,5 +58,26 @@
     - rewrite
     - expires
 
+- name: copy uwsgi_params
+  copy: src=uwsgi_params dest=/home/cw
+
+- name: copy uwsgi.ini
+  template: src=uwsgi.ini.j2 dest=/home/cw/uwsgi.ini mode=0644
+
+- name: create uwsgi config directories
+  file: path=/etc/uwsgi/vassals state=directory
+
+- name: uwsgi config symlink
+  file: path=/etc/uwsgi/vassals/uwsgi.ini src=/home/cw/uwsgi.ini state=link
+
+- name: create uwsgi log file
+  file: path="/home/cw/uwsgi.log" state=touch owner=www-data group=adm
+
+- name: uwsgi upstart
+  template: src=uwsgi_upstart.conf.j2 dest=/etc/init/uwsgi.conf
+
 - name: restart apache
   service: name=apache2 state=restarted
+
+- name: restart uwsgi
+  service: name=uwsgi state=restarted
