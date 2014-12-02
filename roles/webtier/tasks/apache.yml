@@ -4,6 +4,9 @@
 - name: install uwsgi system wide
   pip: name=uwsgi
 
+- name: install apache uwsgi proxy module
+  apt: pkg=libapache2-mod-proxy-uwsgi-dbg
+
 - name: install php5
   apt: pkg=php5
 
@@ -57,6 +60,8 @@
     - headers
     - rewrite
     - expires
+    - proxy
+    - proxy_http
 
 - name: copy uwsgi_params
   copy: src=uwsgi_params dest=/home/cw
